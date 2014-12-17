@@ -37,7 +37,7 @@ if __name__ == '__main__':
     if "flytrex" in available_libs:
         flytrex_group = OptionGroup(parser, "FlyTrex Options",
                                     "Set of command options specific to processing the FlyTrex data logs.\n"
-                                    ">>> quadproc --flytrex [--flyout (CSV|GEOJSON)] logfile [outfile]")
+                                    ">>> geosync --flytrex [--flyout (CSV|GEOJSON)] logfile [outfile]")
         flytrex_group.add_option("--flytrex", 
                                  action="store_true", dest="flytrex", default=False,
                                  help="FlyTrex Logfile Processing.")
@@ -51,7 +51,7 @@ if __name__ == '__main__':
                                "Set of command options specific to calculating offset between          "
                                "camera clock and GPS time (UTC). Defaults to STDOUT.                   "
                                "NOTE: Timestring form \"2014-10-25 17:01:05\"                          "
-                               ">>> quadproc --offsetcalc timestring imagefile [outfile]")
+                               ">>> geosync --offsetcalc timestring imagefile [outfile]")
     offsetcalc_group.add_option("--offsetcalc", 
                             action="store_true", dest="offsetcalc", default=False,
                             help="Camera time vs. GPS time offset processing")
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     # GeoTag Options
     geotag_group = OptionGroup(parser, "GeoTag Image(s) Options",
                                "Set of command options specific to geotagging photos from GPS data.    "
-                               ">>> quadproc --geotag [--geoout (EXIF|CSV|GEOJSON)] [--offset offset] logfile (imagefile|directory) [outfile]")
+                               ">>> geosync --geotag [--geoout (EXIF|CSV|GEOJSON)] [--offset offset] logfile (imagefile|directory) [outfile]")
     geotag_group.add_option("--geotag", 
                             action="store_true", dest="geotag", default=False,
                             help="Geotag photo(s) from GPS logfile")
