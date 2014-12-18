@@ -177,7 +177,7 @@ class FlyTrexLog(object):
                     e_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 53 (NS): number of satellites (not XORed) This is obviously wrong and needs some work
-                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+1],xor_mask)
+                    temp_data = raw_data[current_offset:current_offset+1]
                     sat_num = struct.unpack('>B', temp_data)[0]
                     current_offset=current_offset+1
                     #BYTE 54: ??? (not XORed, seems to be always 0)
