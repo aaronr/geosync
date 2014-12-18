@@ -33,7 +33,7 @@ class FlyTrexLog(object):
         '''
         self.filename=filename
         # Open and read the file
-        test_file = open(filename, 'rb')
+        test_file = open(filename)
         test_data = test_file.read()        
         self.decode(test_data)
         
@@ -175,10 +175,9 @@ class FlyTrexLog(object):
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
                     e_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
-                    #BYTE 53 (NS): number of satellites (not XORed)
+                    #BYTE 53 (NS): number of satellites (not XORed) This is obviously wrong and needs some work
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+1],xor_mask)
                     sat_num = struct.unpack('>B', temp_data)[0]
-                    print sat_num, current_offset
                     current_offset=current_offset+1
                     #BYTE 54: ??? (not XORed, seems to be always 0)
                     current_offset=current_offset+1
