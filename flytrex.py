@@ -33,7 +33,7 @@ class FlyTrexLog(object):
         '''
         self.filename=filename
         # Open and read the file
-        test_file = open(filename)
+        test_file = open(filename, 'rb')
         test_data = test_file.read()        
         self.decode(test_data)
         
