@@ -19,6 +19,7 @@ Geosync! This CLI tool does a few things in one fell swoop.
 ## Usage. `./geosync` (currently a wishlist!)
 
 **Something like:**
+
     Usage: geosync.py [options]* arg1 [arg]*
     
     Options:
