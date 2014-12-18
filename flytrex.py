@@ -136,26 +136,49 @@ class FlyTrexLog(object):
                     altitude = float(struct.unpack('>l',temp_data)[0])/1000.0
                     current_offset=current_offset+4
                     #BYTE 21-24 (HA): horizontal accuracy estimate (see uBlox NAV-POSLLH message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    horiz_acc = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
                     #BYTE 25-28 (VA): vertical accuracy estimate (see uBlox NAV-POSLLH message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    vert_acc = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
                     #BYTE 29-32: ??? (seems to be always 0)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    rand_one = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
                     #BYTE 33-36 (NV): NED north velocity (see uBlox NAV-VELNED message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    n_vel = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
                     #BYTE 37-40 (EV): NED east velocity (see uBlox NAV-VELNED message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    e_vel = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
                     #BYTE 41-44 (DV): NED down velocity (see uBlox NAV-VELNED message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
+                    d_vel = struct.unpack('>l', temp_data)[0]
                     current_offset=current_offset+4
-                    #BYTE 45-46 (PD): position DOP (see uBlox NAV-DOP message for details)
+                    #BYTE 45-46 (PD): position DOP (see uBlox NAV-DOP message for details) Dilution of precision
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
+                    p_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 47-48 (VD): vertical DOP (see uBlox NAV-DOP message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
+                    v_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 49-50 (ND): northing DOP (see uBlox NAV-DOP message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
+                    n_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 51-52 (ED): easting DOP (see uBlox NAV-DOP message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
+                    e_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 53 (NS): number of satellites (not XORed)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+1],xor_mask)
+                    sat_num = struct.unpack('>B', temp_data)[0]
+                    print sat_num, current_offset
                     current_offset=current_offset+1
                     #BYTE 54: ??? (not XORed, seems to be always 0)
                     current_offset=current_offset+1
