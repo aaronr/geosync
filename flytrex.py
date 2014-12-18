@@ -62,12 +62,13 @@ class FlyTrexLog(object):
         if len(raw_data) > self.first_packet_offset:
             while current_offset < len(raw_data):
                 message_header = struct.unpack('>H',raw_data[current_offset:current_offset+2])[0]
-                current_offset=current_offset+2
                 #print "message header:" + hex(message_header)
                 # Assert that the packet_type is 0x55aa
                 if (message_header != 0x55aa):
                     #print "Have to skip and keep looking as this header is wrong"
+                    current_offset=current_offset+1
                     continue
+                current_offset=current_offset+2
                 message_type = struct.unpack('B',raw_data[current_offset:current_offset+1])[0]
                 #print "message type:" + hex(message_type)
                 current_offset=current_offset+1
