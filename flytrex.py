@@ -177,13 +177,29 @@ class FlyTrexLog(object):
                     e_dop = struct.unpack('>h', temp_data)[0]
                     current_offset=current_offset+2
                     #BYTE 53 (NS): number of satellites (not XORed) This is obviously wrong and needs some work
-                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+1],xor_mask)
+                    temp_data = raw_data[current_offset:current_offset+1]
                     sat_num = struct.unpack('>B', temp_data)[0]
                     current_offset=current_offset+1
                     #BYTE 54: ??? (not XORed, seems to be always 0)
                     current_offset=current_offset+1
                     #BYTE 55 (FT): fix type (0 - no lock, 2 - 2D lock, 3 - 3D lock, 
                     #     not sure if other values can be expected - see uBlox NAV-SOL message for details)
+                    temp_data = self.decode_mask(raw_data[current_offset:current_offset+1],xor_mask)
+                    fix_type = struct.unpack('>B', temp_data)[0]
+                    if fix_type == 0:
+                        fix_type = "No Lock"
+                    if fix_type == 1:
+                        fix_type = "Dead Reckoning"
+                    elif fix_type == 2:
+                        fix_type = "2D Lock"
+                    elif fix_type == 3:
+                        fix_type = "3D Lock"
+                    if fix_type == 4:
+                        fix_type = "GPS + Dead Reckoning"
+                    if fix_type == 5:
+                        fix_type = "Time Only Fix"
+                    else:
+                        fix_type = "Unable to determine fix type"
                     current_offset=current_offset+1
                     #BYTE 56: ??? (seems to be always 0)
                     current_offset=current_offset+1
