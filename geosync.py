@@ -87,3 +87,15 @@ if __name__ == '__main__':
     if options.flytrex and ("flytrex" in available_libs):
         myLog = flytrex.FlyTrexLog(args[0])
         myLog.writeCSV("foo")
+
+    elif options.offsetcalc:
+	import exifread
+	from datetime import datetime
+	imgDate = datetime.strptime(args[0], "%Y-%m-%d %H:%M:%S")
+	f = open(args[1], 'rb')
+	tags = exifread.process_file(f)
+	f.close()
+	exifDateStr = tags['EXIF DateTimeDigitized'].values
+	exifDate = datetime.strptime(exifDateStr, "%Y:%m:%d %H:%M:%S")
+	diff = exifDate - imgDate
+	print diff.total_seconds()
