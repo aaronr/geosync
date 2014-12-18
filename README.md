@@ -11,7 +11,7 @@ You've got a ton of images from your UAV (you have one, right?) without proper `
 
 Geosync! This CLI tool does a few things in one fell swoop.
 
-1. Crunches through the binary file, of which your type****** is defined in the CLI (currently only `flytrex` works), to output a nicely formatted CSV file with the proper geodata and timestamp of your UAV's GPS info.
+1. Crunches through the binary file, of which your data type (manufacturer specific) is defined in the CLI (currently only `flytrex` works), to output a nicely formatted CSV file with the proper geodata and timestamp of your UAV's GPS info.
 1. Image time offset (`--offsetcalc`) calculates the offset between the camera clock and the GPS time (UTC) to ensure your timestamps are matching and *step 3* interpolates with the proper offset.
 1. Scrapes the EXIF data from your images. For each image, `geosync.py` interpolates a lat/lng pair by comparing the image's timestamp with the GPS timestamps and setting the proper offset from *step 2*.
 1. Properly formatted lat/lng values are returned with the image's filename into a new, useable CSV to use when building.
