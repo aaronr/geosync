@@ -42,7 +42,7 @@ if __name__ == '__main__':
                                  action="store_true", dest="flytrex", default=False,
                                  help="FlyTrex Logfile Processing.")
         flytrex_group.add_option("--flyout", 
-                                 dest="format",
+                                 dest="flyout",
                                  help="Output Format. Options STDOUT|CSV|GEOJSON. [STDOUT]")
         parser.add_option_group(flytrex_group)
 
@@ -86,4 +86,5 @@ if __name__ == '__main__':
 
     if options.flytrex and ("flytrex" in available_libs):
         myLog = flytrex.FlyTrexLog(args[0])
-        myLog.writeCSV("foo")
+        if options.flyout:
+          myLog.writeCSV(options.flyout)

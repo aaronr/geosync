@@ -38,8 +38,43 @@ class FlyTrexLog(object):
         self.decode(test_data)
         
     def writeCSV(self, filename):
+        """ logobj.writeCSV(filename) you need a log object and provide a filename which will be writen
+            in the current working directory.
+        """
+        #print "This is trying to write a CSV!!!!!!!!!"
+        import os
+        import csv
+         
+        extra = [
+        'extra_column',
+        ]
+        
+        output_directory = os.getcwd() # local working directory
+
+        if filename[-4:].lower() <> ".csv":
+            filename = filename+".csv"
+
+
+
+        csvfile  = open(os.path.join(output_directory,filename), "wb")
+        writer = csv.writer(csvfile, delimiter=',')
+        header = ['id','Longitude','Latitude','path']
+        # add extra headers if needed
+        #header.extend(extra)
+        writer.writerow(header)
+         
+        #print type(self.log)
+         
         for x in self.log:
-            print x
+            #print x
+            row = str(x).split(',') #[str(id),str(lon),str(lat),str(path)]
+            # add extra data if extra headers where used
+            #row.extend(extra_out)
+            writer.writerow(row)
+         
+        csvfile.flush()
+        csvfile.close()
+
 
 
     def decode_mask(self,data,mask):
