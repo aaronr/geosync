@@ -188,15 +188,15 @@ class FlyTrexLog(object):
                     fix_type = struct.unpack('>B', temp_data)[0]
                     if fix_type == 0:
                         fix_type = "No Lock"
-                    if fix_type == 1:
+                    elif fix_type == 1:
                         fix_type = "Dead Reckoning"
                     elif fix_type == 2:
                         fix_type = "2D Lock"
                     elif fix_type == 3:
                         fix_type = "3D Lock"
-                    if fix_type == 4:
+                    elif fix_type == 4:
                         fix_type = "GPS + Dead Reckoning"
-                    if fix_type == 5:
+                    elif fix_type == 5:
                         fix_type = "Time Only Fix"
                     else:
                         fix_type = "Unable to determine fix type"
