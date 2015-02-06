@@ -87,7 +87,10 @@ if __name__ == '__main__':
     if options.flytrex and ("flytrex" in available_libs):
         myLog = flytrex.FlyTrexLog(args[0])
         if options.flyout:
-          myLog.writeCSV(options.flyout)
+            myLog.write(options.flyout)
+        else:
+            # Default to STDOUT
+            myLog.write()
     elif options.offsetcalc:
 	import exifread
 	from datetime import datetime
