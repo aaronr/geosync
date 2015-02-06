@@ -18,6 +18,18 @@ logger=logging.getLogger(__name__)
 import re
 import csv
 
+class Geosync(object):
+    def __init__(self, logfile, offset, inputfiles):
+        '''
+        A Geosync object is the structure to hold the synced data
+        '''
+        self.logfile = logfile
+        self.offset = offset
+        self.inputfiles = inputfiles
+
+    def write(self,outfile=None):
+        pass
+
 if __name__ == '__main__':
     usage = "usage: %prog [options]* arg1 [arg]*"
     parser = OptionParser(usage=usage)
@@ -37,13 +49,13 @@ if __name__ == '__main__':
     if "flytrex" in available_libs:
         flytrex_group = OptionGroup(parser, "FlyTrex Options",
                                     "Set of command options specific to processing the FlyTrex data logs.\n"
-                                    ">>> geosync --flytrex [--flyout (CSV|GEOJSON)] logfile [outfile]")
+                                    ">>> geosync --flytrex [--flyout (*.csv|*.geojson)] logfile")
         flytrex_group.add_option("--flytrex", 
                                  action="store_true", dest="flytrex", default=False,
-                                 help="FlyTrex Logfile Processing.")
+                                 help="FlyTrex Logfile Processing. Dumps to stdout if no --flyout")
         flytrex_group.add_option("--flyout", 
                                  dest="flyout",
-                                 help="Output Format. Options STDOUT|CSV|GEOJSON. [STDOUT]")
+                                 help="Output File. Type based on file extenaion. Options csv|geojson")
         parser.add_option_group(flytrex_group)
 
     # Offset Options
@@ -60,13 +72,16 @@ if __name__ == '__main__':
     # GeoTag Options
     geotag_group = OptionGroup(parser, "GeoTag Image(s) Options",
                                "Set of command options specific to geotagging photos from GPS data.    "
-                               ">>> geosync --geotag [--geoout (EXIF|CSV|GEOJSON)] [--offset offset] logfile (imagefile|directory) [outfile]")
+                               ">>> geosync --geotag [--geoout (*.csv|*.geojson)] [--offset offset] logfile (imagefile|directory)")
     geotag_group.add_option("--geotag", 
                             action="store_true", dest="geotag", default=False,
                             help="Geotag photo(s) from GPS logfile")
     geotag_group.add_option("--geoout", 
-                            dest="format",
-                            help="Output Format. Options EXIF|CSV|GEOJSON. [STDOUT]")
+                            dest="geoout",
+                            help="Output File. Type based on file extenaion. Options csv|geojson")
+    geotag_group.add_option("--geolog", 
+                            dest="geolog",
+                            help="The logfile type being referenced (flytrex) [flytrex]")
     geotag_group.add_option("--offset", 
                             dest="offset",
                             help="Offset to apply between GPS time and camera time in seconds. [0.0]")
@@ -102,3 +117,22 @@ if __name__ == '__main__':
 	exifDate = datetime.strptime(exifDateStr, "%Y:%m:%d %H:%M:%S")
 	diff = exifDate - imgDate
 	print diff.total_seconds()
+    elif options.geotag:
+        # Lets pull it all together and geotag some photos
+        myLog = None
+        if options.geolog:
+            if options.geolog == 'flytrex' and ("flytrex" in available_libs):
+                myLog = flytrex.FlyTrexLog(args[0])
+        # Sync stuff up
+        files = args[1]
+        offset = 0
+        if options.offset:
+            offset = options.offset
+        mySyncLog = Geosync(myLog,offset,files)
+        if options.geoout:
+            # Need to write out the synced log to file
+            mySyncLog.write(options.geoout)
+        else:
+            # Default to STDOUT
+            mySyncLog.write()
+        
