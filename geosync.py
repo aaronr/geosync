@@ -18,16 +18,37 @@ logger=logging.getLogger(__name__)
 import re
 import csv
 
+class GeosyncLogRecord(object):
+    def __init__(self, logid, filename):
+        self.logid=logid
+        self.filename=filename
+
+
 class Geosync(object):
+    log = []
     def __init__(self, logfile, offset, inputfiles):
         '''
         A Geosync object is the structure to hold the synced data
         '''
+        # This is actually a "geosync" geojson file
         self.logfile = logfile
+        # float indicating time offset
         self.offset = offset
+        # list of files to sync up
         self.inputfiles = inputfiles
+        
+        # Try to do the sync
+        # Itterate over input files
+          # Read the exif time from file
+          # apply offset if non-zero
+          # Find the closest matching GPS record from logfile
+          # Write the id<->filename mapping to internal store
 
     def write(self,outfile=None):
+        # Itterate over our internal store
+          # Lookup ID from logfile
+          # write out record (i.e. filename, time, lat, lon, elevation, extras
+
         pass
 
 if __name__ == '__main__':
@@ -122,7 +143,10 @@ if __name__ == '__main__':
         myLog = None
         if options.geolog:
             if options.geolog == 'flytrex' and ("flytrex" in available_libs):
+                # convert to geosync interchange format
+                #myLog = flytrex.FlyTrexLog(args[0]).toGeoSync()
                 myLog = flytrex.FlyTrexLog(args[0])
+
         # Sync stuff up
         files = args[1]
         offset = 0

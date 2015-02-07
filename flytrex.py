@@ -7,14 +7,28 @@ import struct
 from datetime import datetime
 import os
 import csv
+# from geosyncgeneric import GeoSyncGPSData
 
 filename = '00000004.FPV'
 
+########## In geosync.py
+#class GeoSyncGPSData(object):
+#    def __init__(self, time, lat, lon, alt):
+#        self.time=time
+#        self.lat=lat
+#        self.lon=lon
+#        self.alt=alt
+################
+
+#class FlyTrexGPSData(GeoSyncGPSData):
 class FlyTrexGPSData(object):
     def __init__(self, time, lat, lon, alt):
         '''
         A FlyTrexGPSData object is the structure to hold a single GPS record
         '''
+        # in the future we will init the parent class
+        #GeoSyncGPSData.__init__(self, time, lat, lon, alt)
+        #self.pitch = pitch
         self.time=time
         self.lat=lat
         self.lon=lon
