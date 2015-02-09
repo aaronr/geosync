@@ -7,6 +7,7 @@ import struct
 from datetime import datetime
 import os
 import csv
+import flight
 # from geosyncgeneric import GeoSyncGPSData
 
 filename = '00000004.FPV'
@@ -39,6 +40,7 @@ class FlyTrexGPSData(object):
 
 class FlyTrexLog(object):
     log = []
+    log_new = []
     first_packet_offset = 46
     morning_night = 1
 
@@ -289,6 +291,7 @@ class FlyTrexLog(object):
 
                 if message_type == 0x10:
                     self.log.append(FlyTrexGPSData(dt,latitude,longitude,altitude*3.28084))
+                    self.log_new.append(point)
                     #print "GPS Data - " + str(longitude) + ' ' + str(latitude) + ' ' + str(altitude*3.28084) + 'f'
 
 
