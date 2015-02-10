@@ -140,7 +140,7 @@ class FlyTrexLog(object):
 
                 if message_type == 0x10:
                     # initialize record
-                    point = []
+                    point = flight.Store()
                     xor_mask = struct.unpack('B',raw_data[current_offset+55:current_offset+56])[0]
                     #print "xor = " + str(xor_mask)
 
@@ -165,7 +165,7 @@ class FlyTrexLog(object):
                     year = year + 2000
                     try:
                         dt = datetime(year, month, day, hour, minute, second)
-                        point.append(('date', dt))
+                        point.date = dt
                         #print dt
                     except:
                         #print "ERROR WITH TIME: %d %d %d %d %d %d" % (year, month, day, hour, minute, second)
@@ -177,30 +177,30 @@ class FlyTrexLog(object):
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     #print ''.join('{:02x}'.format(x) for x in temp_data)
                     longitude = float(struct.unpack('>l',temp_data)[0])/10000000.0
-                    point.append(('longitude', longitude))
+                    point.longitude = longitude
                     #print type(longitude)
                     current_offset=current_offset+4
                     #BYTE 13-16 (LA): latitude (x10^7, degree decimal)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     #print ''.join('{:02x}'.format(x) for x in temp_data)
                     latitude = float(struct.unpack('>l',temp_data)[0])/10000000.0
-                    point.append(('latitude', latitude))
+                    point.latitude = latitude
                     #print type(longitude)
                     current_offset=current_offset+4
                     #BYTE 17-20 (AL): altitude (in milimeters)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     altitude = float(struct.unpack('>l',temp_data)[0])/1000.0
-                    point.append(('altitude', altitude))
+                    point.altitude = altitude
                     current_offset=current_offset+4
                     #BYTE 21-24 (HA): horizontal accuracy estimate (see uBlox NAV-POSLLH message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     horiz_acc = struct.unpack('>l', temp_data)[0]
-                    point.append(('horiz_acc', horiz_acc))
+                    point.horiz_acc = horiz_acc
                     current_offset=current_offset+4
                     #BYTE 25-28 (VA): vertical accuracy estimate (see uBlox NAV-POSLLH message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     vert_acc = struct.unpack('>l', temp_data)[0]
-                    point.append(('vert_acc', vert_acc))
+                    point.vert_acc = vert_acc
                     current_offset=current_offset+4
                     #BYTE 29-32: ??? (seems to be always 0)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
@@ -210,42 +210,42 @@ class FlyTrexLog(object):
                     #BYTE 33-36 (NV): NED north velocity (see uBlox NAV-VELNED message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     n_vel = struct.unpack('>l', temp_data)[0]
-                    point.append(('n_vel', n_vel))
+                    point.n_vel = n_vel
                     current_offset=current_offset+4
                     #BYTE 37-40 (EV): NED east velocity (see uBlox NAV-VELNED message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     e_vel = struct.unpack('>l', temp_data)[0]
-                    point.append(('e_vel', e_vel))
+                    point.e_vel = e_vel
                     current_offset=current_offset+4
                     #BYTE 41-44 (DV): NED down velocity (see uBlox NAV-VELNED message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+4],xor_mask)
                     d_vel = struct.unpack('>l', temp_data)[0]
-                    point.append(('d_vel', d_vel))
+                    point.d_vel = d_vel
                     current_offset=current_offset+4
                     #BYTE 45-46 (PD): position DOP (see uBlox NAV-DOP message for details) Dilution of precision
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
                     p_dop = struct.unpack('>h', temp_data)[0]
-                    point.append(('p_dop', p_dop))
+                    point.p_dop = p_dop
                     current_offset=current_offset+2
                     #BYTE 47-48 (VD): vertical DOP (see uBlox NAV-DOP message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
                     v_dop = struct.unpack('>h', temp_data)[0]
-                    point.append(('v_dop', v_dop))
+                    point.v_dop = v_dop
                     current_offset=current_offset+2
                     #BYTE 49-50 (ND): northing DOP (see uBlox NAV-DOP message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
                     n_dop = struct.unpack('>h', temp_data)[0]
-                    point.append(('n_dop', n_dop))
+                    point.n_dop = n_dop
                     current_offset=current_offset+2
                     #BYTE 51-52 (ED): easting DOP (see uBlox NAV-DOP message for details)
                     temp_data = self.decode_mask(raw_data[current_offset:current_offset+2],xor_mask)
                     e_dop = struct.unpack('>h', temp_data)[0]
-                    point.append(('e_dop', e_dop))
+                    point.e_dop = e_dop
                     current_offset=current_offset+2
                     #BYTE 53 (NS): number of satellites (not XORed) This is obviously wrong and needs some work
                     temp_data = raw_data[current_offset:current_offset+1]
                     sat_num = struct.unpack('>B', temp_data)[0]
-                    point.append(('sat_num', sat_num))
+                    point.sat_num = sat_num
                     current_offset=current_offset+1
                     #BYTE 54: ??? (not XORed, seems to be always 0)
                     current_offset=current_offset+1
@@ -267,7 +267,7 @@ class FlyTrexLog(object):
                         fix_type = "Time Only Fix"
                     else:
                         fix_type = "Unable to determine fix type"
-                    point.append(('fix_type', fix_type))
+                    point.fix_type = fix_type
                     current_offset=current_offset+1
                     #BYTE 56: ??? (seems to be always 0)
                     current_offset=current_offset+1
