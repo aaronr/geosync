@@ -5,15 +5,6 @@ import os
 
 # order the points by time
 
-class MyEncoder(json.JSONEncoder):
-
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return int(mktime(obj.timetuple()))
-
-        return json.JSONEncoder.default(self, obj)
-
-
 class FlightLog(object):
 
     def __init__(self, points):
