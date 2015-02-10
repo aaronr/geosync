@@ -169,6 +169,7 @@ class FlyTrexLog(object):
                         point.date = dt
                         #print dt
                     except:
+                        point.date = 0
                         #print "ERROR WITH TIME: %d %d %d %d %d %d" % (year, month, day, hour, minute, second)
                         continue
 
