@@ -56,42 +56,6 @@ class FlyTrexLog(object):
         self.decode(test_data)
         self.flight = flight.FlightLog(self.log_new)
 
-    def write(self, filename='STDOUT'):
-
-        extra = [
-        'extra_column',
-        ]
-
-        output_directory = os.getcwd() # local working directory
-
-        if filename.lower().endswith('.csv'):
-            csvfile  = open(os.path.join(output_directory,filename), "wb")
-            writer = csv.writer(csvfile, delimiter=',')
-            header = ['id','time','latitude','longitude','elevation']
-            # add extra headers if needed
-            #header.extend(extra)
-            writer.writerow(header)
-            idcounter = 0
-            for x in self.log:
-                row = str(x).split(',')
-                # add extra data if extra headers where used
-                # row.extend(extra_out)
-                row.insert(0,str(idcounter))
-                writer.writerow(row)
-                idcounter=idcounter+1
-            csvfile.flush()
-            csvfile.close()
-        elif filename == 'STDOUT':
-            header = ['id','time','latitude','longitude','elevation']
-            print ','.join(header)
-            idcounter = 0
-            for x in self.log:
-                row = str(x).split(',')
-                row.insert(0,str(idcounter))
-                print ','.join(row)
-                idcounter=idcounter+1
-
-
 
     def decode_mask(self,data,mask):
         b = bytearray(data)
