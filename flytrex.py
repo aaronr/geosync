@@ -54,6 +54,7 @@ class FlyTrexLog(object):
         test_file = open(filename, 'rb')
         test_data = test_file.read()
         self.decode(test_data)
+        self.flight = flight.FlightLog(self.log_new)
 
     def write(self, filename='STDOUT'):
 
