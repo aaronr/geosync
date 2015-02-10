@@ -140,7 +140,7 @@ class FlyTrexLog(object):
                     continue
 
                 if message_type == 0x10:
-                    # initialize record
+                    #initialize record
                     point = flight.Store()
                     xor_mask = struct.unpack('B',raw_data[current_offset+55:current_offset+56])[0]
                     #print "xor = " + str(xor_mask)
