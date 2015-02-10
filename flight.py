@@ -37,9 +37,9 @@ class FlightLog(object):
                 # row.extend(extra_out)
                 row.append(str(idcounter))
                 row.append(x.properties.date)
-                row.append(x.latitude)
-                row.append(x.longitude)
-                row.append(x.altitude)
+                row.append(x.properties.latitude)
+                row.append(x.properties.longitude)
+                row.append(x.properties.altitude)
                 writer.writerow(row)
                 idcounter=idcounter+1
             csvfile.flush()
