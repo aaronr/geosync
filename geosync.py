@@ -123,10 +123,12 @@ if __name__ == '__main__':
     if options.flytrex and ("flytrex" in available_libs):
         myLog = flytrex.FlyTrexLog(args[0])
         if options.flyout:
-            myLog.write(options.flyout)
+            print options.flyout
+            myLog.flight.write(options.flyout)
         else:
             # Default to STDOUT
-            myLog.write()
+            # myLog.write()
+            myLog.flight.write()
     elif options.offsetcalc:
 	import exifread
 	from datetime import datetime
