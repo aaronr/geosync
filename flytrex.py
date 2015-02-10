@@ -6,7 +6,6 @@ import math
 import struct
 from datetime import datetime
 import os
-import csv
 import flight
 # from geosyncgeneric import GeoSyncGPSData
 
