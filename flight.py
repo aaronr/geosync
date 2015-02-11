@@ -67,6 +67,11 @@ class FlightLog(object):
                 print ','.join(map(str, row))
                 idcounter=idcounter+1
 
+    def add_images(self, matches):
+        # this function will add matched images to corresponding
+        # points in the data structure.
+        pass
+
 
 class Feature(object):
     def __init__(self):
