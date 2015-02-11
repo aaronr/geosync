@@ -3,6 +3,8 @@
 import json
 import os
 import csv
+import copy
+from datetime import datetime
 
 # order the points by time
 
@@ -47,13 +49,17 @@ class FlightLog(object):
             csvfile.close()
 
         elif filename.lower().endswith('.json'):
-            # This does not currently work because it breaks
-            # on the date time stored in feature properties
+            # write all data to geojson
             jsonfile = open(os.path.join(output_directory,filename), "wb")
-            json.dump(self, jsonfile, default=lambda o: o.__dict__)
+            tmp = copy.deepcopy(self)
+            for x in tmp.features:
+                # update records with a string representation of timestamp
+                strdate = x.properties.date.strftime('%Y-%m-%d %H:%M:%S')
+                x.properties.date = strdate
+            json.dump(tmp, jsonfile, default=lambda o: o.__dict__)
+            del tmp
 
         elif filename == 'STDOUT':
-            print 3
             header = ['id','time','latitude','longitude','elevation']
             print ','.join(header)
             idcounter = 0
