@@ -121,12 +121,14 @@ if __name__ == '__main__':
     logger.addHandler(ch)
 
     if options.flytrex and ("flytrex" in available_libs):
+        # This object now contains myLog.flight, which is a geojson
+        # data store that can be used for syncing and printing.
         myLog = flytrex.FlyTrexLog(args[0])
         if options.flyout:
-            myLog.write(options.flyout)
+            myLog.flight.write(options.flyout)
         else:
             # Default to STDOUT
-            myLog.write()
+            myLog.flight.write()
     elif options.offsetcalc:
 	import exifread
 	from datetime import datetime
