@@ -53,7 +53,16 @@ Geosync! This CLI tool does a few things in one fell swoop.
       --offset=OFFSET  Offset to apply between GPS time and camera time in
                        seconds. [0.0]
 
+EXAMPLES:
 
+# Read a flytrex file and write out the results to a file
+./geosync.py --flytrex --flyout test.csv test/00000004.FPV
+
+# Read a flytrex file and write the results to stdout
+./geosync.py --flytrex test/00000004.FPV
+
+# Calculate the time offset for a single file
+./geosync.py --offsetcalc "2014-12-17 13:02:00" IMG_1993.JPG
 
 
 
