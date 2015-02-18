@@ -156,11 +156,11 @@ if __name__ == '__main__':
         offset = 0
         if options.offset:
             offset = options.offset
-        mySyncLog = FlightSyncLog(myLog.flight,offset)
+        mySyncLog = FlightSyncLog()
         #print mySyncLog
         #print mySyncLog.fulllog
         # Need to handle single or directory
-        mySyncLog.add_image(files)
+        mySyncLog.add_image(files,myLog.flight,offset)
         if options.geoout:
             # Need to write out the synced log to file
             mySyncLog.write(options.geoout)

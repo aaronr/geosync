@@ -66,7 +66,9 @@ class FlightLog(object):
             # write all data to geojson
             jsonfile = open(os.path.join(output_directory,filename), "wb")
             tmp = copy.deepcopy(self)
+            #print tmp
             for x in tmp.features:
+                #print x.properties.date
                 # update records with a string representation of timestamp
                 strdate = x.properties.date.strftime('%Y-%m-%d %H:%M:%S')
                 x.properties.date = strdate
@@ -99,12 +101,10 @@ class FlightLog(object):
 
 
 class FlightSyncLog(FlightLog):
-    def __init__(self, fulllog, offset=0):
+    def __init__(self):
         super(FlightSyncLog, self).__init__()
-        self.fulllog = fulllog
-        self.offset=offset
 
-    def add_image(self, image):
+    def add_image(self, image, log, offset=0):
 
         # Find the image date
 	import exifread
@@ -116,7 +116,7 @@ class FlightSyncLog(FlightLog):
 	exifDate = datetime.strptime(exifDateStr, "%Y:%m:%d %H:%M:%S")
 
         # Apply offset to the datetime
-        searchDate = exifDate + timedelta(seconds=int(self.offset))
+        searchDate = exifDate + timedelta(seconds=int(offset))
 
         # Need to properly deal with timezone... but for now assume we add 8 hours to get to UTC
         searchDate = searchDate + timedelta(hours=8)
@@ -124,8 +124,8 @@ class FlightSyncLog(FlightLog):
         # Need to loop through the log and find the closest point
         diff = timedelta(seconds=999999)
         closest = None
-        #print len(self.fulllog.features)
-        for x in self.fulllog.features:
+        #print len(log.features)
+        for x in log.features:
             calcdiff = searchDate - x.properties.date
             #print calcdiff
             if abs(calcdiff) < diff:
