@@ -73,3 +73,5 @@ EXAMPLES:
 # Geosync with a glob filename input
 ./geosync.py --geotag --geoout test.geojson --offset 10 --geolog flytrex test/00000005.FPV test/*.JPG
 
+# pretty-print the json output
+python -m json.tool test.geojson
