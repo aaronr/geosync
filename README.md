@@ -64,6 +64,8 @@ EXAMPLES:
 # Calculate the time offset for a single file
 ./geosync.py --offsetcalc "2014-12-17 13:02:00" IMG_1993.JPG
 
+# Geosync with a single image against a flytrex file
+./geosync.py --geotag --geoout tst.csv --offset 10 --geolog flytrex test/00000005.FPV IMG_0935.JPG
 
 
 

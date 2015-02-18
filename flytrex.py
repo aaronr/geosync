@@ -4,7 +4,7 @@
 
 import math
 import struct
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import flight
 # from geosyncgeneric import GeoSyncGPSData
@@ -52,7 +52,9 @@ class FlyTrexLog(object):
         # Open and read the file
         test_file = open(filename, 'rb')
         test_data = test_file.read()
+        #print "test_data = " + str(len(test_data))
         self.decode(test_data)
+        #print "log = " + str(len(self.log))
         self.flight = flight.FlightLog(self.log_new)
 
 
@@ -128,7 +130,9 @@ class FlyTrexLog(object):
                     year = time & 0b01111111
                     year = year + 2000
                     try:
-                        dt = datetime(year, month, day, hour, minute, second)
+                        # For some reason we have to subtract one day... need to figure out why
+                        dt = datetime(year, month, day, hour, minute, second) - timedelta(days=1)
+                        #dt = datetime(year, month, day, hour, minute, second)
                         point.date = dt
                         #print dt
                     except:

@@ -18,6 +18,8 @@ logger=logging.getLogger(__name__)
 import re
 import csv
 
+from flight import FlightSyncLog
+
 class GeosyncLogRecord(object):
     def __init__(self, logid, filename):
         self.logid=logid
@@ -148,13 +150,17 @@ if __name__ == '__main__':
                 # convert to geosync interchange format
                 #myLog = flytrex.FlyTrexLog(args[0]).toGeoSync()
                 myLog = flytrex.FlyTrexLog(args[0])
-
+                #print args[0] + " length = " + str(len(myLog.flight.features))
         # Sync stuff up
         files = args[1]
         offset = 0
         if options.offset:
             offset = options.offset
-        mySyncLog = Geosync(myLog,offset,files)
+        mySyncLog = FlightSyncLog(myLog.flight,offset)
+        #print mySyncLog
+        #print mySyncLog.fulllog
+        # Need to handle single or directory
+        mySyncLog.add_image(files)
         if options.geoout:
             # Need to write out the synced log to file
             mySyncLog.write(options.geoout)
