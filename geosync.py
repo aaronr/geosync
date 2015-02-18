@@ -152,7 +152,7 @@ if __name__ == '__main__':
                 myLog = flytrex.FlyTrexLog(args[0])
                 #print args[0] + " length = " + str(len(myLog.flight.features))
         # Sync stuff up
-        files = args[1]
+        files = args[1:]
         offset = 0
         if options.offset:
             offset = options.offset
@@ -160,7 +160,8 @@ if __name__ == '__main__':
         #print mySyncLog
         #print mySyncLog.fulllog
         # Need to handle single or directory
-        mySyncLog.add_image(files,myLog.flight,offset)
+        for f in files:
+            mySyncLog.add_image(f,myLog.flight,offset)
         if options.geoout:
             # Need to write out the synced log to file
             mySyncLog.write(options.geoout)
