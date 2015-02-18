@@ -62,13 +62,14 @@ EXAMPLES:
 ./geosync.py --flytrex test/00000004.FPV
 
 # Calculate the time offset for a single file
-./geosync.py --offsetcalc "2014-12-17 13:02:00" IMG_1993.JPG
+./geosync.py --offsetcalc "2014-12-17 13:02:00" test/IMG_1993.JPG
 
 # Geosync with a single image against a flytrex file... output to stdout
-./geosync.py --geotag --offset 10 --geolog flytrex test/00000005.FPV IMG_0935.JPG
+./geosync.py --geotag --offset 10 --geolog flytrex test/00000005.FPV test/IMG_0935.JPG
 
 # Geosync with output to .json
-./geosync.py --geotag --geoout tst.json --offset 10 --geolog flytrex test/00000005.FPV IMG_0935.JPG
+./geosync.py --geotag --geoout tst.json --offset 10 --geolog flytrex test/00000005.FPV test/IMG_0935.JPG
 
-
+# Geosync with a glob filename input
+./geosync.py --geotag --geoout test.geojson --offset 10 --geolog flytrex test/00000005.FPV test/*.JPG
 
