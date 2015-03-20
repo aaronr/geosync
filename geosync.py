@@ -76,6 +76,9 @@ if __name__ == '__main__':
         flytrex_group.add_option("--flytrex", 
                                  action="store_true", dest="flytrex", default=False,
                                  help="FlyTrex Logfile Processing. Dumps to stdout if no --flyout")
+        flytrex_group.add_option("--force_night", 
+                                 action="store_true", dest="force_night", default=False,
+                                 help="For log time known to be between 16:00 and 23:59 set force_night")
         flytrex_group.add_option("--flyout", 
                                  dest="flyout",
                                  help="Output File. Type based on file extenaion. Options csv|geojson")
@@ -125,7 +128,11 @@ if __name__ == '__main__':
     if options.flytrex and ("flytrex" in available_libs):
         # This object now contains myLog.flight, which is a geojson
         # data store that can be used for syncing and printing.
-        myLog = flytrex.FlyTrexLog(args[0])
+        if options.force_night:
+            myLog = flytrex.FlyTrexLog(args[0], options.force_night)
+        else:
+            myLog = flytrex.FlyTrexLog(args[0])
+
         if options.flyout:
             myLog.flight.write(options.flyout)
         else:

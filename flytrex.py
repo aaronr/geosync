@@ -41,13 +41,13 @@ class FlyTrexLog(object):
     log = []
     log_new = []
     first_packet_offset = 46
-    morning_night = 1
 
-    def __init__(self, filename):
+    def __init__(self, filename, force_night=False):
         '''
         A FlyTrexLog object is a wrapper around the base .FPV file that
         flytrex loggers output
         '''
+        self.force_night = force_night
         self.filename=filename
         # Open and read the file
         test_file = open(filename, 'rb')
@@ -76,7 +76,7 @@ class FlyTrexLog(object):
         current_offset = self.first_packet_offset
         # if we have more bytes than the initial header
         if len(raw_data) > self.first_packet_offset:
-            while current_offset < len(raw_data):
+            while current_offset+4 < len(raw_data):
                 message_header = struct.unpack('>H',raw_data[current_offset:current_offset+2])[0]
                 #print "message header:" + hex(message_header)
                 # Assert that the packet_type is 0x55aa
@@ -102,6 +102,7 @@ class FlyTrexLog(object):
                 # Check all the params before moving on...
                 if (next_header != 0x55aa):
                     #print "Message must be wrong length..."
+                    #print "Next Header:" + hex(next_header)
                     continue
 
                 if message_type == 0x10:
@@ -118,7 +119,10 @@ class FlyTrexLog(object):
                     minute = time & 0b00111111
                     time >>= 6
                     hour = time & 0b00001111
-                    if self.morning_night:
+                    # check if we need to force the timestamp up by 16 (force night)
+                    if self.force_night:
+                        if (hour+16) > 24:
+                            print "ERROR WITH SINGLE TIME: Trying to force_night but forces hours over 24 hours... are you sure you need to force_night?"
                         hour = hour + 16
                     time >>= 4
                     day = time & 0b00011111
@@ -137,7 +141,7 @@ class FlyTrexLog(object):
                         #print dt
                     except:
                         point.date = 0
-                        #print "ERROR WITH TIME: %d %d %d %d %d %d" % (year, month, day, hour, minute, second)
+                        print "ERROR WITH SINGLE TIME: %d %d %d %d %d %d" % (year, month, day, hour, minute, second)
                         continue
 
                     current_offset=current_offset+4

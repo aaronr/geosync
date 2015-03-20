@@ -62,7 +62,7 @@ class FlightLog(object):
             csvfile.flush()
             csvfile.close()
 
-        elif filename.lower().endswith('.json'):
+        elif filename.lower().endswith('.json') and len(self.features)>0:
             # write all data to geojson
             jsonfile = open(os.path.join(output_directory,filename), "wb")
             tmp = copy.deepcopy(self)
@@ -75,7 +75,7 @@ class FlightLog(object):
             json.dump(tmp, jsonfile, default=lambda o: o.__dict__)
             del tmp
 
-        elif filename == 'STDOUT':
+        elif filename == 'STDOUT' and len(self.features)>0:
             header = ['id','time','latitude','longitude','elevation']
             # Add in the image filename if it is there
             if hasattr(self.features[0].properties, 'image'):
