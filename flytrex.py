@@ -135,8 +135,8 @@ class FlyTrexLog(object):
                     year = year + 2000
                     try:
                         # For some reason we have to subtract one day... need to figure out why
-                        dt = datetime(year, month, day, hour, minute, second) - timedelta(days=1)
-                        #dt = datetime(year, month, day, hour, minute, second)
+                        #dt = datetime(year, month, day, hour, minute, second) - timedelta(days=1)
+                        dt = datetime(year, month, day, hour, minute, second)
                         point.date = dt
                         #print dt
                     except:
